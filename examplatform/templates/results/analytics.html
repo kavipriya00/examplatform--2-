@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<h2>Exam Analytics</h2>
+<table>
+    <tr><th>Exam</th><th>Average Score</th></tr>
+    {% for stat in exam_stats %}
+    <tr><td>{{ stat.title }}</td><td>{{ stat.avg_score|floatformat:1 }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

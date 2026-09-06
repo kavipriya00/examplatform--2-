@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Exams{% endblock %}
+{% block content %}
+<h2>Available Exams</h2>
+<ul class="exam-list">
+{% for exam in exams %}
+    <li>
+        {{ exam.title }} ({{ exam.subject.name }}, {{ exam.duration_minutes }} min)
+        {% if exam.id in taken_ids %}
+            <span class="badge">Completed</span>
+        {% else %}
+            <a href="{% url 'take_exam' exam.id %}">Start</a>
+        {% endif %}
+    </li>
+{% empty %}
+    <li>No exams available yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}

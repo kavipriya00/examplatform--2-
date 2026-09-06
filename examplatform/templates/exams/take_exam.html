@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ exam.title }}{% endblock %}
+{% block content %}
+<h2>{{ exam.title }}</h2>
+<p id="timer" data-minutes="{{ exam.duration_minutes }}">Time left: --:--</p>
+
+<form method="post" id="exam-form">
+    {% csrf_token %}
+    {% for q in questions %}
+    <div class="question-block">
+        <p>{{ forloop.counter }}. {{ q.text }}</p>
+        <label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
+        <label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
+        <label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
+        <label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+    </div>
+    {% endfor %}
+    <button type="submit">Submit Exam</button>
+</form>
+
+<script src="{% static 'js/exam_timer.js' %}"></script>
+{% endblock %}

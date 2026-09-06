@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Generate Questions{% endblock %}
+{% block content %}
+<h2>Generate Questions - {{ syllabus.subject.name }}</h2>
+{% if messages %}{% for m in messages %}<p>{{ m }}</p>{% endfor %}{% endif %}
+
+<details>
+    <summary>View extracted syllabus text</summary>
+    <pre style="white-space: pre-wrap;">{{ syllabus.extracted_text|truncatechars:2000 }}</pre>
+</details>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Unit Number</label>
+    <input type="number" name="unit_number" value="1" min="1" required>
+
+    <label>Difficulty</label>
+    <select name="difficulty">
+        <option value="BASIC">Basic</option>
+        <option value="ADVANCED">Advanced</option>
+    </select>
+
+    <label>Number of Questions</label>
+    <input type="number" name="count" value="5" min="1" max="20" required>
+
+    <button type="submit">Generate with AI</button>
+</form>
+<p><a href="{% url 'review_questions' syllabus.id %}">Go to review screen &rarr;</a></p>
+{% endblock %}
