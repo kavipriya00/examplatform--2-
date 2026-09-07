@@ -20,8 +20,19 @@
         <option value="ADVANCED">Advanced</option>
     </select>
 
-    <label>Number of Questions</label>
-    <input type="number" name="count" value="5" min="1" max="20" required>
+    <label>Number of MCQs (1 mark each)</label>
+    <input type="number" name="mcq_count" value="5" min="0" max="20" required>
+
+    <label>Number of Long-Answer Questions</label>
+    <input type="number" name="long_count" value="0" min="0" max="10" required>
+
+    <label>Marks per Long-Answer Question</label>
+    <select name="long_marks">
+        <option value="2">2 marks</option>
+        <option value="5">5 marks</option>
+        <option value="10">10 marks</option>
+        <option value="15" selected>15 marks</option>
+    </select>
 
     <button type="submit">Generate with AI</button>
 </form>

@@ -4,7 +4,9 @@
 <h2>My Results</h2>
 <ul>
 {% for r in results %}
-    <li>{{ r.exam.title }}: {{ r.score }} / {{ r.total_questions }}</li>
+    <li>{{ r.exam.title }}: {{ r.obtained_marks }} / {{ r.total_marks }}
+        {% if not r.fully_graded %} (pending grading){% endif %}
+    </li>
 {% empty %}
     <li>No results yet.</li>
 {% endfor %}

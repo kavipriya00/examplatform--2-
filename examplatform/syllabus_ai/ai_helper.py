@@ -17,11 +17,11 @@ def _clean_json(raw_text):
     return re.sub(r"^```json|```$", "", raw_text.strip(), flags=re.MULTILINE).strip()
 
 
-def generate_questions(syllabus_text, unit_number, difficulty, count=5):
+def generate_questions(syllabus_text, unit_number, difficulty, mcq_count=5, long_count=0, long_marks=15):
     """
-    Sends the syllabus text to Gemini and asks for `count` MCQs of a given
-    difficulty, scoped to one unit. Returns a list of dicts ready to be
-    saved as Question objects.
+    Sends the syllabus text to Gemini and asks for a mix of MCQ (1 mark each)
+    and long-answer questions (worth `long_marks` each). Returns a list of
+    dicts ready to be saved as Question objects.
     """
     prompt = f"""
 You are generating exam questions for a university course.
@@ -29,20 +29,30 @@ You are generating exam questions for a university course.
 Syllabus content (Unit {unit_number}):
 \"\"\"{syllabus_text}\"\"\"
 
-Generate exactly {count} multiple-choice questions at {difficulty} difficulty
-based ONLY on the content above.
+Generate exactly {mcq_count} multiple-choice questions (1 mark each) and
+{long_count} long-answer/essay questions ({long_marks} marks each), all at
+{difficulty} difficulty, based ONLY on the content above.
 
 Respond with ONLY a JSON array (no markdown, no explanation text outside the
-JSON), where each item has this exact shape:
+JSON). Each item must have this shape:
+
+For MCQs:
 {{
+  "question_type": "MCQ",
   "topic_name": "short topic name",
   "question": "the question text",
-  "option_a": "...",
-  "option_b": "...",
-  "option_c": "...",
-  "option_d": "...",
+  "marks": 1,
+  "option_a": "...", "option_b": "...", "option_c": "...", "option_d": "...",
   "correct_option": "A",
   "explanation": "one sentence why this is correct"
+}}
+
+For long-answer questions:
+{{
+  "question_type": "LONG",
+  "topic_name": "short topic name",
+  "question": "the essay-style question text",
+  "marks": {long_marks}
 }}
 """
     client = _get_client()

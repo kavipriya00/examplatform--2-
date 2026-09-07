@@ -2,5 +2,9 @@
 {% block title %}Result{% endblock %}
 {% block content %}
 <h2>{{ exam.title }} - Result</h2>
-<p>Score: {{ result.score }} / {{ result.total_questions }}</p>
+{% if result.fully_graded %}
+<p>Score: {{ result.obtained_marks }} / {{ result.total_marks }}</p>
+{% else %}
+<p>Provisional score (MCQs only, long-answers pending staff review): {{ result.obtained_marks }} / {{ result.total_marks }}</p>
+{% endif %}
 {% endblock %}

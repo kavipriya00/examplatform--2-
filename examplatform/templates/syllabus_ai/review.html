@@ -6,8 +6,9 @@
 
 {% for q in questions %}
 <div class="question-block">
-    <p><strong>Unit {{ q.unit_number }} - {{ q.topic_name }} ({{ q.difficulty }})</strong></p>
+    <p><strong>Unit {{ q.unit_number }} - {{ q.topic_name }} ({{ q.difficulty }}, {{ q.question_type }}, {{ q.marks }} mark{{ q.marks|pluralize }})</strong></p>
     <p>{{ q.text }}</p>
+    {% if q.question_type == "MCQ" %}
     <ul>
         <li>A. {{ q.option_a }}</li>
         <li>B. {{ q.option_b }}</li>
@@ -15,6 +16,9 @@
         <li>D. {{ q.option_d }}</li>
     </ul>
     <p>Correct: {{ q.correct_option }} &mdash; {{ q.explanation }}</p>
+    {% else %}
+    <p><em>Long-answer question &mdash; graded manually after students submit.</em></p>
+    {% endif %}
     <a href="{% url 'approve_question' q.id %}">Approve</a> |
     <a href="{% url 'reject_question' q.id %}">Reject</a>
 </div>

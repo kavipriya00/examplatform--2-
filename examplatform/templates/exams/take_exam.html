@@ -9,11 +9,17 @@
     {% csrf_token %}
     {% for q in questions %}
     <div class="question-block">
-        <p>{{ forloop.counter }}. {{ q.text }}</p>
-        <label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
-        <label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
-        <label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
-        <label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+        <p>{{ forloop.counter }}. {{ q.text }} <em>[{{ q.marks }} mark{{ q.marks|pluralize }}]</em></p>
+
+        {% if q.question_type == "MCQ" %}
+            <label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+        {% else %}
+            <textarea name="question_{{ q.id }}" rows="6" style="width:100%;" required
+                placeholder="Write your answer here..."></textarea>
+        {% endif %}
     </div>
     {% endfor %}
     <button type="submit">Submit Exam</button>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Grade Answers{% endblock %}
+{% block content %}
+<h2>Grade Long-Answer Questions - {{ exam.title }}</h2>
+{% if not ungraded %}
+<p>Nothing left to grade &mdash; all answers graded.</p>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    {% for a in ungraded %}
+    <div class="question-block">
+        <p><strong>{{ a.result.student.username }}</strong> &mdash; {{ a.question.text }}
+           <em>(max {{ a.question.marks }} marks)</em></p>
+        <p style="white-space: pre-wrap; background:#f4f6f8; padding:8px;">{{ a.text_answer }}</p>
+        <label>Marks awarded:
+            <input type="number" name="marks_{{ a.id }}" min="0" max="{{ a.question.marks }}" required>
+        </label>
+    </div>
+    {% endfor %}
+    <button type="submit">Save Grades</button>
+</form>
+{% endif %}
+{% endblock %}
