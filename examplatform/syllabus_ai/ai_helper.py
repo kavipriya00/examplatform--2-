@@ -47,7 +47,7 @@ JSON), where each item has this exact shape:
 """
     client = _get_client()
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt,
     )
 
@@ -74,7 +74,7 @@ Split it into units. Respond with ONLY a JSON array, no other text, like:
 """
     client = _get_client()
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt,
     )
 
