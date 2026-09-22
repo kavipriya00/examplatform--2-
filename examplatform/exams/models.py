@@ -33,13 +33,13 @@ class Exam(models.Model):
     title = models.CharField(max_length=150)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="exams")
     duration_minutes = models.PositiveIntegerField(default=30)
+    exam_date = models.DateField(null=True, blank=True)
     questions = models.ManyToManyField(Question, related_name="exams", limit_choices_to={"status": "APPROVED"})
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
 
 class Result(models.Model):
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="results")
