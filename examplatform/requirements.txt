@@ -3,3 +3,4 @@ pdfplumber
 google-genai
 python-dotenv
 whitenoise
+gunicorn
