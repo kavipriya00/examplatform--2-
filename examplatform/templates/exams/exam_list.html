@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Exams{% endblock %}
 {% block content %}
-<h2>Available Exams</h2>
-<ul class="exam-list">
-{% for exam in exams %}
-    <li>
-        {{ exam.title }} ({{ exam.subject.name }}, {{ exam.duration_minutes }} min)
-        {% if exam.id in taken_ids %}
-            <span class="badge">Completed</span>
-        {% else %}
-            <a href="{% url 'take_exam' exam.id %}">Start</a>
+<h2>Exam Schedule</h2>
+<table>
+    <tr><th>Exam</th><th>Subject</th><th>Date</th><th>Duration</th>{% if user.role != "STUDENT" %}<th>Paper</th>{% endif %}</tr>
+    {% for exam in exams %}
+    <tr>
+        <td>{{ exam.title }}</td>
+        <td>{{ exam.subject.name }}</td>
+        <td>{{ exam.exam_date|default:"TBA" }}</td>
+        <td>{{ exam.duration_minutes }} min</td>
+        {% if user.role != "STUDENT" %}
+        <td><a href="{% url 'question_paper' exam.id %}" target="_blank">View / Print Paper</a></td>
         {% endif %}
-    </li>
-{% empty %}
-    <li>No exams available yet.</li>
-{% endfor %}
-</ul>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No exams scheduled yet.</td></tr>
+    {% endfor %}
+</table>
 {% endblock %}

@@ -85,3 +85,19 @@ def grade_answers_view(request, exam_id):
         return redirect("grade_answers", exam_id=exam.id)
 
     return render(request, "exams/grade_answers.html", {"exam": exam, "ungraded": ungraded})
+
+@login_required
+@user_passes_test(_is_staff_or_admin)
+def question_paper_view(request, exam_id):
+    """
+    Renders approved questions as a printable exam paper (MCQs in Part A,
+    long-answer in Part B). Staff uses the browser's Print/Save-as-PDF to
+    get a physical/PDF copy to hand out to students.
+    """
+    exam = get_object_or_404(Exam, id=exam_id)
+    mcqs = exam.questions.filter(question_type="MCQ")
+    long_questions = exam.questions.filter(question_type="LONG")
+    total_marks = sum(q.marks for q in exam.questions.all())
+    return render(request, "exams/question_paper.html", {
+        "exam": exam, "mcqs": mcqs, "long_questions": long_questions, "total_marks": total_marks,
+    })

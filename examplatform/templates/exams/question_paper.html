@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ exam.title }} - Question Paper</title>
+    <style>
+        body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; color: #000; }
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .part-title { font-weight: bold; text-decoration: underline; margin-top: 24px; }
+        .question { margin: 14px 0; }
+        .marks { float: right; }
+        .print-btn { margin-bottom: 20px; }
+        @media print { .print-btn { display: none; } }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+
+    <div class="header">
+        <h2>{{ exam.subject.department.name }}</h2>
+        <h3>{{ exam.title }} &mdash; {{ exam.subject.name }} ({{ exam.subject.code }})</h3>
+    </div>
+
+    <div class="meta">
+        <span>Date: {{ exam.exam_date|default:"____________" }}</span>
+        <span>Duration: {{ exam.duration_minutes }} minutes</span>
+        <span>Total Marks: {{ total_marks }}</span>
+    </div>
+
+    {% if mcqs %}
+    <p class="part-title">Part A &mdash; Multiple Choice Questions ({{ mcqs|length }} &times; 1 mark)</p>
+    {% for q in mcqs %}
+    <div class="question">
+        {{ forloop.counter }}. {{ q.text }} <span class="marks">[{{ q.marks }}]</span><br>
+        A. {{ q.option_a }}&nbsp;&nbsp;&nbsp; B. {{ q.option_b }}&nbsp;&nbsp;&nbsp;
+        C. {{ q.option_c }}&nbsp;&nbsp;&nbsp; D. {{ q.option_d }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if long_questions %}
+    <p class="part-title">Part B &mdash; Answer the Following</p>
+    {% for q in long_questions %}
+    <div class="question">
+        {{ forloop.counter }}. {{ q.text }} <span class="marks">[{{ q.marks }}]</span>
+    </div>
+    {% endfor %}
+    {% endif %}
+</body>
+</html>
